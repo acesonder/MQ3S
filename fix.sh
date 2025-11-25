@@ -26,7 +26,8 @@ fix_readme() {
         echo "Creating README.md..."
         cat > README.md << 'EOF'
 # MQ3S
-MQ
+
+MQ3S is a repository management toolkit with verification and fix utilities.
 
 ## Usage
 
@@ -68,16 +69,21 @@ fix_permissions() {
 fix_whitespace() {
     echo "Fixing trailing whitespace..."
 
+    shopt -s nullglob
     for file in *.md *.sh; do
         if [ -f "$file" ]; then
             if grep -q '[[:space:]]$' "$file" 2>/dev/null; then
+                # Create backup before modifying
+                cp "$file" "$file.bak"
                 sed -i 's/[[:space:]]*$//' "$file"
+                rm "$file.bak"
                 echo "✓ Removed trailing whitespace from $file"
             else
                 echo "✓ $file has no trailing whitespace"
             fi
         fi
     done
+    shopt -u nullglob
 }
 
 # Run all fixes

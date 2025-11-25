@@ -55,6 +55,7 @@ verify_whitespace() {
     echo "Checking for trailing whitespace..."
     local has_issues=0
 
+    shopt -s nullglob
     for file in *.md *.sh; do
         if [ -f "$file" ]; then
             if grep -q '[[:space:]]$' "$file" 2>/dev/null; then
@@ -65,6 +66,7 @@ verify_whitespace() {
             fi
         fi
     done
+    shopt -u nullglob
 
     return $has_issues
 }
